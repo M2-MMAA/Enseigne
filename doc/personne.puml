@@ -1,0 +1,15 @@
+@startuml
+abstract class Personne {
+  + nom
+  + prenom
+  + tel
+  + mail
+  + afficher()
+}
+
+class Vendeur
+class Client
+
+Personne <|-- Vendeur
+Personne <|-- Client
+@enduml
