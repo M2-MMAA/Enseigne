@@ -92,11 +92,11 @@ gitGraph
       ```
 
    Recommencez ces quatre étapes à chaque avancée.
-4. Envoyez vos commits sur GitHub. La première fois :
+4. Envoyez vos commits sur GitHub. **Au premier envoi de chaque nouvelle branche**, indiquez à Git de la créer sur GitHub :
    ```console
    git push -u origin feat/gestion-vendeurs
    ```
-   Ensuite, `git push` suffit. Vous pouvez pousser à tout moment et autant de fois que vous voulez : c'est aussi une sauvegarde de votre travail.
+   Pour les envois suivants de cette même branche, `git push` suffit. Si Git répond « has no upstream branch », c'est que cette première étape a été oubliée : relancez la commande avec `-u`. Vous pouvez pousser à tout moment et autant de fois que vous voulez : c'est aussi une sauvegarde de votre travail.
 5. Ouvrez la Pull Request :
    - Sur la page du dépôt, cliquez sur **Compare & pull request**.
    - Vérifiez que la branche cible (*base*) est bien `main`.
