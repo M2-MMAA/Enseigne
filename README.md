@@ -8,35 +8,38 @@ Ce projet consiste à créer une application pour gérer une enseigne de matéri
 
 ### Sur Linux et macOS
 ```bash
-git clone https://github.com/titis73/Enseigne.git
+git clone https://github.com/M2-MMAA/Enseigne.git
 cd Enseigne
-python3 -m venv .venv # Évite d'installer dans l'environnement global
-source .venv/bin/activate # Active l'environnement virtuel
-pip install -e .  # Installe les dépendances
+python3 -m venv .venv          # Évite d'installer dans l'environnement global
+source .venv/bin/activate      # Active l'environnement virtuel
+pip install -e .               # Installe le projet et ses dépendances
 ```
 
-### Sur Windows
+### Sur Windows (PowerShell)
 ```powershell
-git clone https://github.com/titis73/Enseigne.git
+git clone https://github.com/M2-MMAA/Enseigne.git
 cd Enseigne
-python3 -m venv .venv  # Évite d'installer dans l'environnement global
-.\.venv\Scripts\Activate.ps1  # Active l'environnement virtuel
-pip install -e . # Installe les dépendances
+py -m venv .venv               # Évite d'installer dans l'environnement global (ou : python -m venv .venv)
+.\.venv\Scripts\Activate.ps1   # Active l'environnement virtuel
+pip install -e .               # Installe le projet et ses dépendances
 ```
+
+> Si PowerShell refuse d'exécuter `Activate.ps1`, lancez une seule fois `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, puis réessayez.
 
 ## Utilisation
 
-Aprés avoir fait les etapes détaillé ci-dessus exécuter la commande suivante 
+Après avoir suivi les étapes ci-dessus (environnement virtuel activé), exécutez la commande suivante :
 ```console
 enseigne
 ```
 
-# Affichage des diagrammes UML
+## Affichage des diagrammes UML
 
-Les diagrammes UML sont écrits dans le langage [Mermaid](https://mermaid.js.org/intro/). 
+Les diagrammes UML sont écrits dans le langage [Mermaid](https://mermaid.js.org/intro/).
 
-Pour les visualiser directement dans votre navigateur à l'aide du script de documentation, vous pouvez exécuter les commandes suivantes dans votre console :
+Pour les visualiser directement dans votre navigateur à l'aide du script de documentation, exécutez les commandes suivantes depuis la racine du projet :
 
+**Sur Linux et macOS :**
 ```bash
 # Afficher le diagramme de classe
 python3 ./doc/mermaid.py ./doc/class.mmd
@@ -48,27 +51,43 @@ python3 ./doc/mermaid.py ./doc/use_case.mmd
 python3 ./doc/mermaid.py ./doc/sequence.mmd
 ```
 
+**Sur Windows (PowerShell) :**
+```powershell
+# Afficher le diagramme de classe
+python ./doc/mermaid.py ./doc/class.mmd
+
+# Afficher le diagramme de cas d'utilisation
+python ./doc/mermaid.py ./doc/use_case.mmd
+
+# Afficher le diagramme de séquence
+python ./doc/mermaid.py ./doc/sequence.mmd
+```
+
 ## Structure du projet
 ```text
 Enseigne/
-├── docs/                 # Documentation (Diagramme UML)
+├── .github/
+│   └── CODEOWNERS        # Responsables GitHub qui valident les Pull Requests
+├── doc/                  # Documentation (Diagrammes UML Mermaid + script d'affichage)
 ├── src/
 │   └── enseigne/
-│       ├── __init__.py   # Fichier d'initialisation des modules 
-│       ├── __main__.py   # Fichier d'entrée de notre programme 
-│       ├── module1.py    # Classe 1 
+│       ├── __init__.py   # Fichier d'initialisation des modules
+│       ├── __main__.py   # Fichier d'entrée de notre programme
+│       ├── module1.py    # Classe 1
 │       └── module2.py    # Classe 2
-├── LICENSE               # Conditions d’utilisation de votre projet  
-├── README.md             # Explication du projet  
+├── .gitattributes        # Normalisation des fins de ligne (LF dans le dépôt)
+├── .gitignore            # Liste des fichiers et dossiers non suivis par Git
+├── CONTRIBUTING.md       # Guide pour contribuer (branches, Pull Requests, problèmes fréquents)
+├── LICENSE               # Conditions d'utilisation de votre projet
+├── README.md             # Explication du projet
 └── pyproject.toml        # Fichier de configuration
-└── .gitignore            # Liste des fichiers et dossiers non suivis par Git
 ```
 
 ## Organisation des membres
 
 | Rôle | Personnes |
 |----------|-------------|
-| GITHUB | Mathis, Josquin |
+| GITHUB | Mathis, Josquin, Raoul |
 | Dictionnaire | Jodie, Judith, Lilou, Anaïs |
 | Diagramme UML (Use Case) | ???? |
 | Diagramme UML (Séquence) | ???? |
@@ -96,56 +115,23 @@ Enseigne/
 
 
 ## Comment contribuer
-*Note importante : On ne code jamais directement sur la branche principale. Le travail s'organise par version/semaine (ex: `S42` pour la semaine 42, puis `S46` pour la semaine suivante).*
 
-1. Créez un compte sur [GitHub](https://github.com).
-2. Forkez le projet depuis [Enseigne](https://github.com/titis73/Enseigne). Cliquez sur le bouton **Fork** en haut à droite de la page du dépôt GitHub, puis sur *Create fork*. Cette action va créer un dépôt `user_name/Enseigne` sur votre compte.
-3. clonez votre propre dépôt sur votre machine : 
-   ```bash
-   git clone https://github.com/user_name/Enseigne
-   ```
-4. Placez-vous sur la branche de la semaine en cours (par exemple `S42`) :
-   ```bash
-   git checkout S42
-   ```
-5. Créez et basculez sur une nouvelle branche de travail personnelle en respectant la convention :
-   - `feat/nom_de_la_feature` pour l'ajout d'une fonctionnalité
-   - `fix/nom_du_fix` pour résoudre un bug
-   
-   Exemple :
-   ```console
-   git checkout -b feat/gestion-vendeurs
-   ```
-6. Ajoutez toutes vos modifications :
-   ```console
-   git add .
-   ```
-7. Enregistrez les modifications avec un message clair :
-   ```console
-   git commit -m "feat: ajout de la classe Vendeur"
-   ```
-8. Envoyez votre branche sur votre fork GitHub (Push) :
-   ```console
-   git push origin feat/gestion-vendeurs
-   ```
-9. Ouvrez une Pull Request (PR) :
-   - Rendez-vous sur votre fork sur GitHub.
-   - Cliquez sur **"Compare & pull request"**.
-   - Ciblez la branche de la semaine correspondante sur le dépôt officiel (ex: fusionner votre branche vers la branche `S42` du dépôt officiel).
-   - Créez la Pull Request pour relecture par les responsables GitHub.
-10. Une fois la PR validée et fusionnée par les responsables, mettez à jour votre dépôt local :
-   ```console
-   git checkout S42
-   git pull origin S42
-   git branch -d feat/gestion-vendeurs
-   ```
+> **Règle d'or :** on ne pousse jamais directement sur `main`. Chaque modification passe par une branche personnelle, puis par une Pull Request validée par un responsable GitHub.
+
+Avant votre première contribution, lisez le guide **[CONTRIBUTING.md](CONTRIBUTING.md)** : il explique pas à pas comment préparer son poste, nommer sa branche et sa Pull Request, proposer ses modifications, et quoi faire en cas de problème.
+
+## Livraisons
+
+Chaque livraison est un **tag** posé sur `main` par les responsables GitHub à la date limite (`S42`, `S46`, `S50`…). Le code livré est consultable dans l'onglet **Releases** du dépôt, ou via le menu de sélection des branches et tags.
+
+Une PR fusionnée après la date limite part simplement dans la livraison suivante.
 
 ## Conventions d'écriture du code
 - Le nom des classes utilise le **PascalCase**.
 - Les méthodes, fonctions et variables utilisent le **snake_case**.
 - Un seul fichier par classe, et le nom du fichier sera en snake_case (exemple : pour la classe `SecteurActivite`, le fichier s'appellera `secteur_activite.py`).
 - Les fonctions et méthodes seront typées et documentées en utilisant le standard PEP 8 de Python.
-  
+
   Exemple :
   ```python
   """
