@@ -14,11 +14,18 @@ description = "TD0 M2 MMAA INFO901 : Enseigne"
 readme = "README.md"
 license = "MIT"
 
+[project.optional-dependencies]
+dev = ["pytest"]
+
 [project.urls]
-Repository = "https://github.com/titis73/Enseigne"
+Repository = "https://github.com/M2-MMAA/Enseigne"
 
 [project.scripts]
 enseigne = "enseigne.__main__:main"
 
 [tool.setuptools.packages.find]
+where = ["src"]
 include = ["enseigne*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

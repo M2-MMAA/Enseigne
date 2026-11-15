@@ -1,35 +1,64 @@
 """
 Classe : Achat
-Module : achat.py
-Description : Un achat d'un produit par un client
+Module : enseigne.achat
+Description : Achat d'un produit par un client, en une certaine quantité.
 """
-from produit import Produit
 
-class Achat():
-  """ Un achat concerne un produit, en une certaine quantite """
-  def __init__(self, aProduit, aQuantite):
-    """Constructeur avec passage des valeurs pour les attributs"""
-    self.produit = aProduit
-    self.quantite = aQuantite
+from __future__ import annotations
 
-  def __str__(self):
-    """ Methode pour l'affichage de la classe """
-    chaine = "Achat" + "\n"
-    chaine = chaine + "produit=" + str(self.produit.nom) + "\n"
-    chaine = chaine + "quantite=" + str(self.quantite) + "\n"
-    chaine = chaine + "montant=" + str(self.getMontant()) + "\n"
-    return chaine
+from datetime import datetime
+from typing import TYPE_CHECKING, Optional
 
-  def getMontant(self):
-    """ Calcule le montant de l'achat """
-    return self.produit.getPrix() * self.quantite
+if TYPE_CHECKING:
+    from enseigne.produit import Produit
 
-  def getProduit(self):
-    """ Renvoie le produit achete """
-    return self.produit
 
-if __name__ == '__main__':
-  """ Permet d'executer le code localement """
-  maRaquette = Produit("Raquette", 89.90, "Tennis")
-  monAchat = Achat(maRaquette, 2)
-  print(monAchat)
+class Achat:
+    """Achat d'un produit, en une certaine quantité, à une date donnée.
+
+    Attributes:
+        quantite: Nombre d'exemplaires achetés.
+        date: Date et heure de l'achat.
+        produit: Produit acheté.
+    """
+
+    def __init__(self, produit: Produit, quantite: int, date: Optional[datetime] = None) -> None:
+        """Construit l'achat.
+
+        Args:
+            produit: Produit acheté.
+            quantite: Nombre d'exemplaires achetés.
+            date: Date et heure de l'achat ; maintenant si elle n'est pas donnée.
+        """
+        self.produit = produit
+        self.quantite = quantite
+        self.date = date if date is not None else datetime.now()
+
+    def montant(self) -> float:
+        """Calcule le montant de l'achat.
+
+        Returns:
+            Le montant de l'achat (prix du produit × quantité), en euros.
+        """
+        return self.produit.prix * self.quantite
+
+    def __str__(self) -> str:
+        """Renvoie le produit, la quantité, la date et le montant de l'achat.
+
+        Returns:
+            Une description courte de l'achat.
+        """
+        return (
+            f"Achat de {self.quantite} × {self.produit.libelle} le {self.date:%d/%m/%Y %H:%M} "
+            f"(montant : {self.montant():.2f} €)"
+        )
+
+
+if __name__ == "__main__":
+    from enseigne.produit import Produit
+    from enseigne.rayon import Rayon
+
+    rayon_tennis = Rayon("Tennis")
+    raquette = Produit("P001", "Raquette", 89.90, rayon_tennis)
+    achat = Achat(raquette, 2, datetime(2026, 11, 15, 10, 30))
+    print(achat)
