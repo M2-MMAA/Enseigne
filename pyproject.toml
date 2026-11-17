@@ -15,7 +15,7 @@ readme = "README.md"
 license = "MIT"
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest", "mypy"]
 
 [project.urls]
 Repository = "https://github.com/M2-MMAA/Enseigne"
@@ -26,6 +26,9 @@ enseigne = "enseigne.__main__:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["enseigne*"]
+
+[tool.mypy]
+files = ["src", "tests"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

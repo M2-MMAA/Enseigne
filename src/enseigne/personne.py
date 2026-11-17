@@ -57,7 +57,7 @@ if __name__ == "__main__":
     from enseigne.client import Client
 
     try:
-        Personne("Martin", "Léa", "0600000000", "lea.martin@exemple.fr")
+        Personne("Martin", "Léa", "0600000000", "lea.martin@exemple.fr")  # type: ignore[abstract]
     except TypeError as erreur:
         print(f"Personne n'est pas instanciable : {erreur}")
     client = Client("Martin", "Léa", "0600000000", "lea.martin@exemple.fr")

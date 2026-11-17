@@ -39,10 +39,11 @@ Environnement virtuel activé, depuis la racine du projet :
 ```console
 pip install -e ".[dev]"     # Installe aussi pytest (une seule fois)
 python -m pytest -q          # Lance tous les tests du dossier tests/
+python -m mypy               # Vérifie les types (src/ et tests/)
 python -m enseigne.rayon     # Démonstration d'une classe (remplacer rayon par le nom du module)
 ```
 
-Les tests tournent aussi sur GitHub (Python 3.9 et 3.13) à chaque Pull Request : une PR ne peut être fusionnée que si les tests sont verts.
+Les tests et la vérification des types tournent aussi sur GitHub (Python 3.9 et 3.13) à chaque Pull Request : une PR ne peut être fusionnée que s'ils sont verts.
 
 ## Affichage des diagrammes UML
 
