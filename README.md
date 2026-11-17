@@ -33,6 +33,17 @@ Après avoir suivi les étapes ci-dessus (environnement virtuel activé), exécu
 enseigne
 ```
 
+## Lancer les tests et les démonstrations
+
+Environnement virtuel activé, depuis la racine du projet :
+```console
+pip install -e ".[dev]"     # Installe aussi pytest (une seule fois)
+python -m pytest -q          # Lance tous les tests du dossier tests/
+python -m enseigne.rayon     # Démonstration d'une classe (remplacer rayon par le nom du module)
+```
+
+Les tests tournent aussi sur GitHub (Python 3.9 et 3.13) à chaque Pull Request : une PR ne peut être fusionnée que si les tests sont verts.
+
 ## Affichage des diagrammes UML
 
 Les diagrammes UML sont écrits dans le langage [Mermaid](https://mermaid.js.org/intro/).
@@ -49,6 +60,9 @@ python3 ./doc/mermaid.py ./doc/use_case.mmd
 
 # Afficher le diagramme de séquence
 python3 ./doc/mermaid.py ./doc/sequence.mmd
+
+# Afficher la roadmap (Gantt des sprints)
+python3 ./doc/mermaid.py ./doc/gantt.mmd
 ```
 
 **Sur Windows (PowerShell) :**
@@ -61,20 +75,25 @@ python ./doc/mermaid.py ./doc/use_case.mmd
 
 # Afficher le diagramme de séquence
 python ./doc/mermaid.py ./doc/sequence.mmd
+
+# Afficher la roadmap (Gantt des sprints)
+python ./doc/mermaid.py ./doc/gantt.mmd
 ```
 
 ## Structure du projet
 ```text
 Enseigne/
 ├── .github/
-│   └── CODEOWNERS        # Responsables GitHub qui valident les Pull Requests
+│   ├── CODEOWNERS        # Responsables GitHub qui valident les Pull Requests
+│   └── workflows/
+│       └── tests.yml     # Lance les tests à chaque Pull Request
 ├── doc/                  # Documentation (Diagrammes UML Mermaid + script d'affichage)
 ├── src/
 │   └── enseigne/
 │       ├── __init__.py   # Fichier d'initialisation des modules
 │       ├── __main__.py   # Fichier d'entrée de notre programme
-│       ├── module1.py    # Classe 1
-│       └── module2.py    # Classe 2
+│       └── rayon.py, …   # Un fichier par classe (voir « Organisation des membres »)
+├── tests/                # Tests (pytest)
 ├── .gitattributes        # Normalisation des fins de ligne (LF dans le dépôt)
 ├── .gitignore            # Liste des fichiers et dossiers non suivis par Git
 ├── CONTRIBUTING.md       # Guide pour contribuer (branches, Pull Requests, problèmes fréquents)
@@ -100,15 +119,14 @@ Enseigne/
 
 | Classe | Personnes |
 |----------|-------------|
-| Vente | Anaïs |
+| Personne | Raoul |
 | Client | Lilou |
 | Achat| Séphora |
 | Produit | Dimitri |
-| ClasseMetier | Mathieu |
+| Enseigne | Mathieu |
 | Vendeur |  Assil |
-| VendeurResponsable| Josquin |
 | Rayon | Mathis |
-| Activite | Yoliza |
+| SecteurActivite | Yoliza |
 | Magasin | Jodie |
 | SiteInternet | Judith |
 
