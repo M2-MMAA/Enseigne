@@ -6,7 +6,7 @@ Description : Rayon d'un secteur d'activité, tenu par un vendeur et proposant d
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from enseigne.produit import Produit
@@ -33,10 +33,11 @@ class Rayon:
             nom: Nom du rayon (Football, Natation…).
         """
         Rayon.compteur += 1
-        self.code_rayon: str = f"RAY-{Rayon.compteur:03d}"
+        self.code_rayon : str = f"RAY-{Rayon.compteur:03d}"
         self.nom = nom
-        self.produits: List[Produit] = []
-        self.vendeur: Optional[Vendeur] = None
+        self.produits: list[Produit] = []      # rempli par Produit.__init__
+        self.vendeur: Vendeur | None = None    # rempli par Vendeur.__init__
+
 
     def __del__(self) -> None:
         """Décrémente le compteur de rayons à la destruction du rayon.
@@ -55,18 +56,21 @@ class Rayon:
         Args:
             produit: Produit proposé dans le rayon.
         """
-        self.produits.append(produit)
+        if produit.rayon is not self:
+               raise ValueError(f"{produit.code} appartient au rayon {produit.rayon.nom}")
+        if produit not in self.produits:
+            self.produits.append(produit)
 
     def montant_total(self) -> float:
         """Calcule le montant total des ventes du rayon.
 
         Returns:
             Le montant total des ventes du rayon.
-
-        Raises:
-            NotImplementedError: Méthode pas encore écrite.
         """
-        raise NotImplementedError("code en cours")
+        if self.vendeur:
+            return self.vendeur.montant_total()
+        else:
+            return 0.0
 
     def __str__(self) -> str:
         """Renvoie le code, le nom et le vendeur du rayon.
@@ -74,18 +78,24 @@ class Rayon:
         Returns:
             Une description courte du rayon.
         """
-        vendeur = f"{self.vendeur.prenom} {self.vendeur.nom}" if self.vendeur else "aucun"
+        vendeur_str = (
+            f"{self.vendeur.prenom} {self.vendeur.nom}" if self.vendeur else "aucun"
+        )
         return (
             f"Rayon {self.code_rayon} {self.nom} "
-            f"({len(self.produits)} produit(s), vendeur : {vendeur})"
+            f"({len(self.produits)} produit(s), vendeur : {vendeur_str})"
         )
 
 
 if __name__ == "__main__":
-    rayon_vtt = Rayon("VTT")
-    rayon_route = Rayon("Route")
-    print(rayon_vtt)
-    print(rayon_route)
+    from enseigne.produit import Produit
+
+    rayon_tennis = Rayon("Tennis")
+
+    raquette = Produit("P001", "Raquette Pro Carbon", 120.00, rayon_tennis)
+    tubes_balles = Produit("P002", "Tube de 4 balles de tennis", 15.50, rayon_tennis)
+
+    print(rayon_tennis)
     print(f"Compteur : {Rayon.compteur}")
-    del rayon_route
+    del rayon_tennis
     print(f"Compteur après suppression d'un rayon : {Rayon.compteur}")
