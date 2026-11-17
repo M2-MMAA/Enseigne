@@ -1,34 +1,55 @@
 """
 Classe : Produit
-Module : produit.py
-Description : Un produit vendu dans un rayon
+Module : enseigne.produit
+Description : Produit proposé dans un rayon.
 """
-class Produit():
-  """ Un produit avec son prix, il se trouve dans un rayon """
-  def __init__(self, aNom, aPrix, aRayon):
-    """Constructeur avec passage des valeurs pour les attributs"""
-    self.nom = aNom
-    self.prix = aPrix
-    self.rayon = aRayon
 
-  def __str__(self):
-    """ Methode pour l'affichage de la classe """
-    chaine = "Produit" + "\n"
-    chaine = chaine + "nom=" + str(self.nom) + "\n"
-    chaine = chaine + "prix=" + str(self.prix) + "\n"
-    chaine = chaine + "rayon=" + str(self.rayon) + "\n"
-    return chaine
+from __future__ import annotations
 
-  def getPrix(self):
-    """ Renvoie le prix du produit """
-    return self.prix
+from typing import TYPE_CHECKING
 
-  def getRayon(self):
-    """ Renvoie le rayon du produit """
-    return self.rayon
+if TYPE_CHECKING:
+    from enseigne.rayon import Rayon
 
-if __name__ == '__main__':
-  """ Permet d'executer le code localement """
-  monProduit = Produit("Raquette", 89.90, "Tennis")
-  print(monProduit)
-  print(monProduit.getPrix())
+
+class Produit:
+    """Produit proposé dans un rayon.
+
+    Attributes:
+        code: Code du produit.
+        libelle: Libellé du produit.
+        prix: Prix unitaire en euros.
+        rayon: Rayon qui propose le produit.
+    """
+
+    def __init__(self, code: str, libelle: str, prix: float, rayon: Rayon) -> None:
+        """Construit le produit et l'ajoute aux produits de son rayon.
+
+        Args:
+            code: Code du produit.
+            libelle: Libellé du produit.
+            prix: Prix unitaire en euros.
+            rayon: Rayon qui propose le produit.
+        """
+        self.code = code
+        self.libelle = libelle
+        self.prix = prix
+        self.rayon = rayon
+        rayon.ajouter_produit(self)
+
+    def __str__(self) -> str:
+        """Renvoie le code, le libellé, le prix et le rayon du produit.
+
+        Returns:
+            Une description courte du produit.
+        """
+        return f"Produit {self.code} {self.libelle} : {self.prix:.2f} € (rayon {self.rayon.nom})"
+
+
+if __name__ == "__main__":
+    from enseigne.rayon import Rayon
+
+    rayon_tennis = Rayon("Tennis")
+    raquette = Produit("P001", "Raquette", 89.90, rayon_tennis)
+    print(raquette)
+    print(rayon_tennis)

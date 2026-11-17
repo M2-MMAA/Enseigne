@@ -1,74 +1,118 @@
 """
 Classe : Vendeur
 Module : enseigne.vendeur
-Description : Représente un vendeur au sein d'une enseigne de sport.
+Description : Vendeur de l'enseigne, qui tient un rayon.
 """
 
-from datetime import datetime, timezone
+from __future__ import annotations
 
-from enseigne.rayon import Rayon
+from datetime import date
+from typing import TYPE_CHECKING
+
+from enseigne.personne import Personne
+
+if TYPE_CHECKING:
+    from enseigne.rayon import Rayon
 
 
-class Vendeur:
+class Vendeur(Personne):
+    """Vendeur de l'enseigne, affecté à un seul rayon.
+
+    Attributes:
+        date_prise_fonction: Date de prise de fonction.
+        indice_salaire: Indice dans la grille des salaires.
+        montant_ventes: Montant cumulé des ventes, en euros.
+        rayon: Rayon tenu par le vendeur.
+    """
+
     def __init__(
         self,
         nom: str,
         prenom: str,
         tel: str,
-        email: str,
-        prise_fonction: datetime,
+        mail: str,
+        date_prise_fonction: date,
         indice_salaire: int,
         rayon: Rayon,
-        cumul_ventes: float = 0.0,
     ) -> None:
-        """Constructeur de la classe Vendeur.
+        """Construit le vendeur et l'enregistre comme vendeur de son rayon.
 
         Args:
             nom: Nom du vendeur.
             prenom: Prénom du vendeur.
-            tel: Numéro de téléphone du vendeur.
-            email: Email du vendeur dans l'enseigne.
-            prise_fonction: Moment où le vendeur commence officiellement à exercer son poste.
-            indice_salaire: Indice de la grille de salaire.
-            rayon: Rayon auquel est assigné le vendeur.
-            cumul_ventes: Montant cumulé de ses ventes.
-        """
-        self.nom = nom
-        self.prenom = prenom
-        self.tel = tel
-        self.email = email
-        self.prise_fonction = prise_fonction
-        self.indice_salaire = indice_salaire
-        self.rayon = rayon
-        self.cumul_ventes = cumul_ventes
+            tel: Numéro de téléphone.
+            mail: Adresse électronique.
+            date_prise_fonction: Date de prise de fonction.
+            indice_salaire: Indice dans la grille des salaires.
+            rayon: Rayon tenu par le vendeur.
 
-    def __str__(self) -> str:
-        date_formatee = self.prise_fonction.strftime("%d/%m/%Y à %H:%M")
+        Raises:
+            ValueError: Si le rayon a déjà un vendeur.
+        """
+        if rayon.vendeur is not None:
+            raise ValueError(f"Le rayon {rayon.code_rayon} a déjà un vendeur")
+        super().__init__(nom, prenom, tel, mail)
+        self.date_prise_fonction = date_prise_fonction
+        self.indice_salaire = indice_salaire
+        self.montant_ventes: float = 0.0
+        self.rayon = rayon
+        rayon.vendeur = self
+
+    def ajouter_vente(self, montant: float) -> None:
+        """Ajoute le montant d'une vente au cumul des ventes du vendeur.
+
+        Args:
+            montant: Montant de la vente, en euros.
+
+        Raises:
+            NotImplementedError: Méthode pas encore écrite.
+        """
+        raise NotImplementedError("code en cours")
+
+    def montant_total(self) -> float:
+        """Renvoie le montant total des ventes du vendeur.
+
+        Returns:
+            Le montant total des ventes, en euros.
+
+        Raises:
+            NotImplementedError: Méthode pas encore écrite.
+        """
+        raise NotImplementedError("code en cours")
+
+    def fiche_signaletique(self) -> str:
+        """Construit la fiche signalétique du vendeur.
+
+        Returns:
+            Le texte de la fiche : nom, prénom, téléphone, mail et montant des ventes.
+        """
         return (
             f"Vendeur : {self.prenom} {self.nom}\n"
             f"  - Tél : {self.tel}\n"
-            f"  - Email : {self.email}\n"
-            f"  - Rayon : {self.rayon}\n"
-            f"  - Prise de fonction : {date_formatee}\n"
-            f"  - Indice de salaire : {self.indice_salaire}\n"
-            f"  - Ventes cumulées : {self.cumul_ventes} €"
+            f"  - Mail : {self.mail}\n"
+            f"  - Montant des ventes : {self.montant_ventes:.2f} €"
         )
+
+    def imprimer_fiche(self) -> None:
+        """Affiche la fiche signalétique du vendeur."""
+        print(self.fiche_signaletique())
+
+    def __str__(self) -> str:
+        """Renvoie le nom du vendeur et le rayon qu'il tient.
+
+        Returns:
+            Une description courte du vendeur.
+        """
+        return f"Vendeur {self.prenom} {self.nom} (rayon {self.rayon.code_rayon} {self.rayon.nom})"
 
 
 if __name__ == "__main__":
-    r1 = Rayon("VTT")
-    v1 = Vendeur(
-        prenom="Jean",
-        nom="Benguigui",
-        tel="0624567267",
-        email="Benguigui@gmail.com",
-        prise_fonction=datetime.now(tz=timezone.utc),
-        rayon=r1,
-        indice_salaire=1,
+    from enseigne.rayon import Rayon
+
+    rayon_vtt = Rayon("VTT")
+    vendeur = Vendeur(
+        "Benguigui", "Jean", "0624567267", "jean.benguigui@exemple.fr", date(2024, 9, 1), 3, rayon_vtt
     )
-    print(v1)
-
-
-"""
-TODO : Ajouter la relation entre Vendeur et Secteur d'activité quand elle sera créée
-"""
+    print(vendeur)
+    print(rayon_vtt)
+    vendeur.imprimer_fiche()

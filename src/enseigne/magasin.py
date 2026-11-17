@@ -1,40 +1,65 @@
 """
 Classe : Magasin
-Module : magasin
-Description : Magasin de l'enseigne, structuré en secteurs d'activités et possédant un site Internet
+Module : enseigne.magasin
+Description : Magasin de l'enseigne, structuré en secteurs d'activité et doté d'un site Internet.
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, List
+
+if TYPE_CHECKING:
+    from enseigne.secteur_activite import SecteurActivite
+    from enseigne.site_internet import SiteInternet
+
+
 class Magasin:
+    """Magasin de l'enseigne.
 
-  def __init__(self, aNom, aSiteInternet):
-    self.nom = aNom
-    self.siteInternet = aSiteInternet
-    self.activites = []
+    Attributes:
+        nom: Nom du magasin.
+        ville: Ville du magasin.
+        site_internet: Site Internet du magasin.
+        secteurs: Secteurs d'activité du magasin.
+    """
 
-  def __str__(self):
-    chaine = "Magasin : " + str(self.nom)
-    chaine += "\n  Site Internet : " + str(self.siteInternet)
-    chaine += "\n  Secteurs d'activités :"
-    for activite in self.activites:
-      chaine += "\n    - " + str(activite)
-    return chaine
+    def __init__(self, nom: str, ville: str, site_internet: SiteInternet) -> None:
+        """Construit le magasin, sans secteur d'activité.
 
-  def getNom(self):
-    return self.nom
+        Args:
+            nom: Nom du magasin.
+            ville: Ville du magasin.
+            site_internet: Site Internet du magasin.
+        """
+        self.nom = nom
+        self.ville = ville
+        self.site_internet = site_internet
+        self.secteurs: List[SecteurActivite] = []
 
-  def getSiteInternet(self):
-    return self.siteInternet
+    def ajouter_secteur(self, secteur: SecteurActivite) -> None:
+        """Ajoute un secteur d'activité au magasin.
 
-  def getActivites(self):
-    return self.activites
+        Args:
+            secteur: Secteur d'activité du magasin.
+        """
+        self.secteurs.append(secteur)
 
-  def ajouterActivite(self, aActivite):
-    self.activites.append(aActivite)
+    def __str__(self) -> str:
+        """Renvoie le nom, la ville, le site et les secteurs du magasin.
+
+        Returns:
+            Une description du magasin sur plusieurs lignes.
+        """
+        lignes = [f"Magasin {self.nom} ({self.ville})", f"  {self.site_internet}"]
+        lignes += [f"  - {secteur}" for secteur in self.secteurs]
+        return "\n".join(lignes)
 
 
-if __name__ == '__main__':
-  m = Magasin("Sport Lyon", "www.sportlyon.fr")
-  m.ajouterActivite("Running")
-  m.ajouterActivite("Randonnée")
-  print(m)
-  print(len(m.getActivites()), "secteurs")
+if __name__ == "__main__":
+    from enseigne.secteur_activite import SecteurActivite
+    from enseigne.site_internet import SiteInternet
+
+    magasin = Magasin("Sport Lyon", "Lyon", SiteInternet("https://www.sport-lyon.fr"))
+    magasin.ajouter_secteur(SecteurActivite("Running"))
+    magasin.ajouter_secteur(SecteurActivite("Randonnée"))
+    print(magasin)
