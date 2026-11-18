@@ -1,17 +1,18 @@
 sequenceDiagram
-  actor Directeur
-  participant Enseigne
+    title Scénario : montant d'un vendeur
+    actor Directeur
+    participant Enseigne
+    participant Vendeur
 
-  Directeur->>+Enseigne: Authentification
-  alt Identifiants valides
-      Enseigne-->>Directeur: OK (Connexion réussie)
-  else Identifiants invalides
-      Enseigne-->>Directeur: Erreur (Accès refusé)
-  end
-  Enseigne-->>-Directeur: Fin de traitement
-
-  Directeur->>+Enseigne: MontantVendeur
-  Enseigne-->>-Directeur: ListVendeur
-
-  Directeur->>+Enseigne: SelectionVendeur
-  Enseigne-->>-Directeur: MontantDuVendeur
+    Directeur->>Enseigne: authentifier(identifiant, motDePasse)
+    alt authentification échouée
+        Enseigne-->>Directeur: erreurAuthentification
+    else authentification réussie
+        Enseigne-->>Directeur: menu
+        Directeur->>Enseigne: montantVendeur()
+        Enseigne-->>Directeur: listeVendeurs
+        Directeur->>Enseigne: choisirVendeur(vendeur)
+        Enseigne->>Vendeur: montantTotalVendeur()
+        Vendeur-->>Enseigne: montant
+        Enseigne-->>Directeur: montantDuVendeur
+    end
